@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: flight-search-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/search_db
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update

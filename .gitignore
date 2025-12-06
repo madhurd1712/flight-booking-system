@@ -1,0 +1,7 @@
+# Project exclude paths
+/flight-booking-service/.gradle/
+/flight-booking-service/build/
+/flight-payment-service/.gradle/
+/flight-payment-service/build/
+/flight-search-service/.gradle/
+/flight-search-service/build/

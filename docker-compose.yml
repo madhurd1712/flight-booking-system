@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  postgres-search:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: search_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports: ["5432:5432"]
+    networks:
+      - flight-net
+
+  postgres-booking:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: booking_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports: ["5433:5432"]
+    networks:
+      - flight-net
+
+  postgres-payment:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports: ["5434:5432"]
+    networks:
+      - flight-net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - flight-net
+
+networks:
+  flight-net:
+    driver: bridge

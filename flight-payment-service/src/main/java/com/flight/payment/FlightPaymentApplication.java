@@ -2,11 +2,13 @@ package com.flight.payment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-public class PaymentApplication {
+@EnableDiscoveryClient
+public class FlightPaymentApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PaymentApplication.class, args);
+        SpringApplication.run(FlightPaymentApplication.class, args);
     }
 }

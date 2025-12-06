@@ -1,7 +1,8 @@
-package com.flight.search.controller;
+package com.flight.booking.search.controller;
 
-import com.flight.search.entity.Flight;
-import com.flight.search.repository.FlightRepository;
+import com.flight.booking.search.entity.Flight;
+import com.flight.booking.search.repository.FlightRepository;
+import com.flight.booking.search.service.FlightSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
@@ -12,22 +13,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final FlightRepository repository;
+    private final FlightSearchService searchService;
 
     @GetMapping("/search")
     public List<Flight> search(@RequestParam String origin, @RequestParam String destination, @RequestParam String date) {
-        LocalDateTime start = LocalDateTime.parse(date + "T00:00:00");
-        LocalDateTime end = LocalDateTime.parse(date + "T23:59:59");
-        return repository.findByOriginAndDestinationAndDepartureTimeBetween(origin, destination, start, end);
+        return searchService.searchFlights(origin, destination, date);
     }
 
     @GetMapping("/{id}/availability")
     public boolean check(@PathVariable Long id, @RequestParam int seats) {
-        return repository.findById(id).map(f -> f.getAvailableSeats() >= seats).orElse(false);
+        return searchService.getFlightById(id).getAvailableSeats() >= seats;
     }
 
     @PostMapping("/seed")
     public Flight seed(@RequestBody Flight flight) {
-        return repository.save(flight);
+        return searchService.updateFlight(flight);
     }
 }

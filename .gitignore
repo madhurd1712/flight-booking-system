@@ -5,3 +5,7 @@
 /flight-payment-service/build/
 /flight-search-service/.gradle/
 /flight-search-service/build/
+/eureka-server/.gradle/
+/eureka-server/build/
+/api-gateway/.gradle/
+/api-gateway/build/

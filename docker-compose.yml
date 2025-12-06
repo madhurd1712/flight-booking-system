@@ -1,46 +1,88 @@
 version: '3.8'
+
 services:
-  postgres-search:
-    image: postgres:15-alpine
+  # PostgreSQL Databases
+  search-db:
+    image: postgres:15
+    container_name: search-db
     environment:
-      POSTGRES_DB: search_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports: ["5432:5432"]
-    networks:
-      - flight-net
+      POSTGRES_DB: flight_search
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - search-data:/var/lib/postgresql/data
 
-  postgres-booking:
-    image: postgres:15-alpine
+  booking-db:
+    image: postgres:15
+    container_name: booking-db
     environment:
-      POSTGRES_DB: booking_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports: ["5433:5432"]
-    networks:
-      - flight-net
+      POSTGRES_DB: flight_booking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - booking-data:/var/lib/postgresql/data
 
-  postgres-payment:
-    image: postgres:15-alpine
+  payment-db:
+    image: postgres:15
+    container_name: payment-db
     environment:
-      POSTGRES_DB: payment_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports: ["5434:5432"]
-    networks:
-      - flight-net
+      POSTGRES_DB: flight_payment
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - payment-data:/var/lib/postgresql/data
 
+  # RabbitMQ
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
-    networks:
-      - flight-net
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
-networks:
-  flight-net:
-    driver: bridge
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+
+  # Eureka Server
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - redis
+
+volumes:
+  search-data:
+  booking-data:
+  payment-data:
+  redis-data:

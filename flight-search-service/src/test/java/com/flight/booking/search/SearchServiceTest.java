@@ -1,8 +1,8 @@
-package com.flight.search;
+package com.flight.booking.search;
 
-import com.flight.search.controller.SearchController;
-import com.flight.search.entity.Flight;
-import com.flight.search.repository.FlightRepository;
+import com.flight.booking.search.controller.SearchController;
+import com.flight.booking.search.entity.Flight;
+import com.flight.booking.search.repository.FlightRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class SearchTest {
+class SearchServiceTest {
 
     @Mock FlightRepository repo;
     @InjectMocks SearchController ctrl;

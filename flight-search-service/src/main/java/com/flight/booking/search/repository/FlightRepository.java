@@ -1,6 +1,6 @@
-package com.flight.search.repository;
+package com.flight.booking.search.repository;
 
-import com.flight.search.entity.Flight;
+import com.flight.booking.search.entity.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,14 +1,37 @@
-server:
-  port: 8083
 spring:
   application:
-    name: flight-payment-service
+    name: flight-payment-service  # ADD THIS
+
+  # datasource config...
   datasource:
-    url: jdbc:postgresql://localhost:5434/payment_db
-    username: user
-    password: password
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: user
-    password: password
+    url: jdbc:postgresql://localhost:5434/flight_payment
+    username: postgres
+    password: postgres
+
+server:
+  port: 8083
+
+# Eureka Client configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
+
+# Docker profile
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://payment-db:5432/flight_payment
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/

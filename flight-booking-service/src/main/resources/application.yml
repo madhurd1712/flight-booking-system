@@ -1,26 +1,37 @@
-server:
-  port: 8082
 spring:
   application:
     name: flight-booking-service
+
+  # datasource config...
   datasource:
-    url: jdbc:postgresql://localhost:5433/booking_db
-    username: user
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: update
-resilience4j:
-  ratelimiter:
-    instances:
-      bookingApi:
-        limitForPeriod: 5
-        limitRefreshPeriod: 10m
-        timeoutDuration: 0s
-  circuitbreaker:
-    instances:
-      paymentService:
-        failureRateThreshold: 50
-        minimumNumberOfCalls: 5
-        slidingWindowSize: 10
-        waitDurationInOpenState: 5s
+    url: jdbc:postgresql://localhost:5433/flight_booking
+    username: postgres
+    password: postgres
+
+server:
+  port: 8082
+
+# Eureka Client configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
+
+# Docker profile
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://booking-db:5432/flight_booking
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/

@@ -7,12 +7,18 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
-        <module name="flight-payment-service.main" />
+        <module name="flight-booking-service.main" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gateway" options="-parameters" />
+      <module name="api-gateway.main" options="-parameters" />
+      <module name="api-gateway.test" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="eureka-server.main" options="-parameters" />
+      <module name="eureka-server.test" options="-parameters" />
       <module name="flight-booking-service" options="-parameters" />
       <module name="flight-booking-service.main" options="-parameters" />
       <module name="flight-booking-service.test" options="-parameters" />

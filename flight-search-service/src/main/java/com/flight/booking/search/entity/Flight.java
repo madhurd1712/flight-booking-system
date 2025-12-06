@@ -1,4 +1,4 @@
-package com.flight.search.entity;
+package com.flight.booking.search.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

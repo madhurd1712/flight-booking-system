@@ -1,0 +1,108 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Search Service Routes
+        - id: search-service
+          uri: lb://FLIGHT-SEARCH-SERVICE
+          predicates:
+            - Path=/api/flights/**
+          filters:
+            - RewritePath=/api/flights/(?<segment>.*), /${segment}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 100
+                redis-rate-limiter.burstCapacity: 150
+                redis-rate-limiter.requestedTokens: 1
+
+        # Booking Service Routes
+        - id: booking-service
+          uri: lb://FLIGHT-BOOKING-SERVICE
+          predicates:
+            - Path=/api/bookings/**
+          filters:
+            - RewritePath=/api/bookings/(?<segment>.*), /${segment}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 50
+                redis-rate-limiter.burstCapacity: 100
+                redis-rate-limiter.requestedTokens: 1
+
+        # Payment Service Routes
+        - id: payment-service
+          uri: lb://FLIGHT-PAYMENT-SERVICE
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - RewritePath=/api/payments/(?<segment>.*), /${segment}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 30
+                redis-rate-limiter.burstCapacity: 60
+                redis-rate-limiter.requestedTokens: 1
+
+        # Auth Routes (no authentication required)
+        - id: auth-route
+          uri: lb://API-GATEWAY
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/(?<segment>.*), /auth/${segment}
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+# JWT Configuration
+jwt:
+  secret: 5Xc9k2Lm8Qp3Rt6Wz4Yv7Bn0Jh1Fg8Ds5Ac2Ke9Mx3Pw6Lt4Hu7Vn1Rb0Qy8Xf # Change this in production!
+  expiration: 86400000 # 24 hours in milliseconds
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.flightbooking.gateway: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/

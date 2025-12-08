@@ -6,4 +6,5 @@ import lombok.Data;
 public class PaymentRequest {
     private Long bookingId;
     private double amount;
+    private Long userId;
 }

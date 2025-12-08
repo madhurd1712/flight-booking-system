@@ -22,16 +22,22 @@ public class BookingService {
         if (!search.checkAvailability(request.getFlightId(), request.getSeats()))
             throw new RuntimeException("No seats");
         
-        Booking booking = Booking.builder().flightId(request.getFlightId()).userId(request.getUserId())
-                .seats(request.getSeats()).amount(request.getAmount()).status("PENDING").build();
+        Booking booking = Booking.builder()
+                .flightId(request.getFlightId())
+                .userId(request.getUserId())
+                .seats(request.getSeats())
+                .amount(request.getAmount())
+                .status("PENDING")
+                .build();
         booking = repo.save(booking);
+
         processPaymentSafely(booking);
         return booking;
     }
 
     @CircuitBreaker(name = "paymentService", fallbackMethod = "circuitBreakerFallBack")
     public void processPaymentSafely(Booking booking) {
-        payment.initiatePayment(new PaymentRequest(booking.getId(), booking.getAmount()));
+        payment.initiatePayment(new PaymentRequest(booking.getId(), booking.getAmount(), booking.getUserId()));
     }
 
     public void circuitBreakerFallBack(Booking booking, Throwable t) {

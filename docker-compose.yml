@@ -81,6 +81,19 @@ services:
       - eureka-server
       - redis
 
+  # Notification Service
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - rabbitmq
+
 volumes:
   search-data:
   booking-data:

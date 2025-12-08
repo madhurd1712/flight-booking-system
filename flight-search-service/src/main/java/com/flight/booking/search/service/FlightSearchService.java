@@ -42,7 +42,7 @@ public class FlightSearchService {
      * Cache individual flight by ID
      */
     @Cacheable(value = "flightCache", key = "#flightId", unless = "#result == null")
-    public Flight getFlightById(Long flightId) {
+    public Flight getFlightById(String flightId) {
         log.info("Fetching flight from database with ID: {}", flightId);
 
         return flightRepository.findById(flightId)

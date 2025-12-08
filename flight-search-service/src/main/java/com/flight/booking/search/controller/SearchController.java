@@ -21,7 +21,7 @@ public class SearchController {
     }
 
     @GetMapping("/{id}/availability")
-    public boolean check(@PathVariable Long id, @RequestParam int seats) {
+    public boolean check(@PathVariable String id, @RequestParam int seats) {
         return searchService.getFlightById(id).getAvailableSeats() >= seats;
     }
 

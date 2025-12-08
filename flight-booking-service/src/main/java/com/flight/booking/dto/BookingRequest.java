@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingRequest {
-    private Long flightId;
-    private Long userId;
+    private String flightId;
+    private String userId;
     private int seats;
     private double amount;
 }

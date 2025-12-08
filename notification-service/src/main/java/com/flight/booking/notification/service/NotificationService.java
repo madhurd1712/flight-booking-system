@@ -1,6 +1,9 @@
 package com.flight.booking.notification.service;
 
+import com.flight.booking.notification.dto.BookingEvent;
 import com.flight.booking.notification.dto.PaymentEvent;
+import com.flight.booking.notification.entity.ProcessedEvent;
+import com.flight.booking.notification.repository.ProcessedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,19 +14,20 @@ public class NotificationService {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private ProcessedEventRepository eventRepository;
 
-    // simple in-memory or DB-backed processed-event store for idempotency
     public boolean isProcessed(String eventId) {
-        // check DB table processed_events
-        return false;
+        return eventRepository.existsById(eventId);
     }
 
     public void markProcessed(String eventId) {
-        // persist processed event id
+        ProcessedEvent evt = new ProcessedEvent();
+        evt.setEventId(eventId);
+        eventRepository.save(evt);
     }
 
     public void sendPaymentNotification(PaymentEvent event) {
-        // send email/SMS (start with console log for now)
         System.out.println("Send payment notification for booking " + event.getBookingId());
 
         try {
@@ -37,8 +41,7 @@ public class NotificationService {
         }
     }
 
-    // Commented for now, will implement after introducing BookingEvent
-    /*public void sendBookingNotification(BookingEvent event) {
+    public void sendBookingNotification(BookingEvent event) {
         System.out.println("Send booking notification for booking " + event.getBookingId());
 
         try {
@@ -50,5 +53,5 @@ public class NotificationService {
         } catch (Exception e) {
             System.err.println("Failed to send email: " + e.getMessage());
         }
-    }*/
+    }
 }

@@ -2,17 +2,19 @@ package com.flight.payment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PaymentEvent {
+public class InventoryEvent {
     private String eventId;
-    private String paymentId;
     private String bookingId;
-    private String userId;
-    private double amount;
-    private String status;
+    private String flightId;
+    private int seats;
+    private String status; // BLOCKED | FAILED
     private long timestamp;
+    private double amount;
 }

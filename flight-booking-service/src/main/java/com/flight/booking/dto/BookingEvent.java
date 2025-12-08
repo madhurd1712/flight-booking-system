@@ -1,19 +1,21 @@
-package com.flight.booking.notification.dto;
+package com.flight.booking.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class PaymentEvent {
+public class BookingEvent {
     private String eventId;
-    private String paymentId;
     private String bookingId;
     private String userId;
-    private double amount;
-    private String status;
+    private String flightId;
+    private int seats;
+    private String status; // CREATED | CONFIRMED | CANCELLED
     private long timestamp;
+    private double amount;
 }

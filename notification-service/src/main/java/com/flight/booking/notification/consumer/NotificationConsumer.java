@@ -1,5 +1,6 @@
 package com.flight.booking.notification.consumer;
 
+import com.flight.booking.notification.dto.BookingEvent;
 import com.flight.booking.notification.dto.PaymentEvent;
 import com.flight.booking.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,7 @@ public class NotificationConsumer {
         notificationService.markProcessed(event.getEventId());
     }
 
-    // Commented for now, will implement after introducing BookingEvent
-    /*@RabbitListener(bindings = @QueueBinding(
+    @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "notification.booking", durable = "true"),
             exchange = @Exchange(value = "app-exchange", type = "topic"),
             key = "booking.*"
@@ -36,5 +36,5 @@ public class NotificationConsumer {
         if (notificationService.isProcessed(event.getEventId())) return;
         notificationService.sendBookingNotification(event);
         notificationService.markProcessed(event.getEventId());
-    }*/
+    }
 }

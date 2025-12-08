@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PaymentRequest {
-    private Long bookingId;
+    private String bookingId;
     private double amount;
-    private Long userId;
+    private String userId;
 }

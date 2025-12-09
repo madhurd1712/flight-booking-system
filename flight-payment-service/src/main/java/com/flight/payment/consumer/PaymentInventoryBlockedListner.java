@@ -40,8 +40,8 @@ public class PaymentInventoryBlockedListner {
             req.setBookingId(inventoryEvent.getBookingId());
             req.setAmount(inventoryEvent.getAmount());
 
+            // Payment event is thrown from within this method on payment.succeeded
             paymentService.process(req);
-
             idempotencyService.markProcessed(inventoryEvent.getEventId());
         } catch (Exception ex) {
             System.err.println("Error handling InventoryEvent: " + ex.getMessage());

@@ -21,21 +21,18 @@ public class PaymentService {
 
         Payment saved = repo.save(Payment.builder().bookingId(request.getBookingId())
                 .amount(request.getAmount()).status("SUCCESS").build());
-        try {
-            PaymentEvent paymentEvent = PaymentEvent.builder()
-                    .eventId(UUID.randomUUID().toString())
-                    .paymentId(saved.getId().toString())
-                    .bookingId(request.getBookingId())
-                    .userId(request.getUserId())
-                    .amount(request.getAmount())
-                    .status("SUCCEEDED")
-                    .timestamp(Instant.now().toEpochMilli())
-                    .build();
 
-            rabbit.convertAndSend("app-exchange", "payment.succeeded", paymentEvent);
-        } catch (Exception e) {
-            System.err.println("RabbitMQ error: " + e.getMessage());
-        }
+        PaymentEvent paymentEvent = PaymentEvent.builder()
+                .eventId(UUID.randomUUID().toString())
+                .paymentId(saved.getId().toString())
+                .bookingId(request.getBookingId())
+                .userId(request.getUserId())
+                .amount(request.getAmount())
+                .status("SUCCEEDED")
+                .timestamp(Instant.now().toEpochMilli())
+                .build();
+
+        rabbit.convertAndSend("app-exchange", "payment.succeeded", paymentEvent);
 
         return "Processed";
     }

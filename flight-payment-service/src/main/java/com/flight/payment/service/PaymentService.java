@@ -1,6 +1,6 @@
 package com.flight.payment.service;
 
-import com.flight.payment.dto.PaymentEvent;
+import com.flight.booking.common.events.PaymentEvent;
 import com.flight.payment.dto.PaymentRequest;
 import com.flight.payment.entity.Payment;
 import com.flight.payment.repository.PaymentRepository;

@@ -1,10 +1,12 @@
 package com.flight.booking.service;
 
 import com.flight.booking.client.*;
+import com.flight.booking.common.events.BookingEvent;
+import com.flight.booking.common.events.InventoryEvent;
+import com.flight.booking.common.idempotency.IdempotencyService;
 import com.flight.booking.dto.*;
 import com.flight.booking.entity.Booking;
 import com.flight.booking.repository.BookingRepository;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

@@ -1,9 +1,9 @@
 package com.flight.booking.notification.service;
 
-import com.flight.booking.notification.dto.BookingEvent;
-import com.flight.booking.notification.dto.PaymentEvent;
-import com.flight.booking.notification.entity.ProcessedEvent;
-import com.flight.booking.notification.repository.ProcessedEventRepository;
+import com.flight.booking.common.events.BookingEvent;
+import com.flight.booking.common.events.PaymentEvent;
+import com.flight.booking.common.idempotency.ProcessedEvent;
+import com.flight.booking.common.idempotency.ProcessedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

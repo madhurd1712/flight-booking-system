@@ -1,6 +1,5 @@
-package com.flight.booking.inventory.repository;
+package com.flight.booking.common.idempotency;
 
-import com.flight.booking.inventory.entity.ProcessedEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProcessedEventRepository extends JpaRepository<ProcessedEvent, String> {}

@@ -1,7 +1,5 @@
-package com.flight.booking.inventory.service;
+package com.flight.booking.common.idempotency;
 
-import com.flight.booking.inventory.entity.ProcessedEvent;
-import com.flight.booking.inventory.repository.ProcessedEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

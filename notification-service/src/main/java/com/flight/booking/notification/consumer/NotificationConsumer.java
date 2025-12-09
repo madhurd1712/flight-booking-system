@@ -1,5 +1,7 @@
 package com.flight.booking.notification.consumer;
 
+import com.flight.booking.common.events.BookingEvent;
+import com.flight.booking.common.events.PaymentEvent;
 import com.flight.booking.notification.dto.BookingEvent;
 import com.flight.booking.notification.dto.PaymentEvent;
 import com.flight.booking.notification.service.NotificationService;

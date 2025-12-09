@@ -1,8 +1,8 @@
 package com.flight.payment.consumer;
 
-import com.flight.payment.dto.InventoryEvent;
+import com.flight.booking.common.events.InventoryEvent;
+import com.flight.booking.common.idempotency.IdempotencyService;
 import com.flight.payment.dto.PaymentRequest;
-import com.flight.payment.service.IdempotencyService;
 import com.flight.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

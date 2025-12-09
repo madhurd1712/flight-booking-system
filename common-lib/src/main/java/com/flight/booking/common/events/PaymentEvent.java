@@ -1,4 +1,4 @@
-package com.flight.booking.notification.dto;
+package com.flight.booking.common.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class PaymentEvent {
     private String eventId;
     private String paymentId;

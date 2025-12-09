@@ -1,4 +1,4 @@
-package com.flight.booking.inventory.entity;
+package com.flight.booking.common.idempotency;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

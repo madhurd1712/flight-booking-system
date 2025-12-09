@@ -1,4 +1,4 @@
-package com.flight.booking.dto;
+package com.flight.booking.common.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventoryEvent {
+public class BookingEvent {
     private String eventId;
     private String bookingId;
+    private String userId;
     private String flightId;
     private int seats;
-    private String status; // BLOCKED | FAILED
+    private String status; // CREATED | CONFIRMED | CANCELLED
     private long timestamp;
     private double amount;
 }

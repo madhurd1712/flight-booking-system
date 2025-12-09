@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common-lib.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/flight-booking-system.iml" filepath="$PROJECT_DIR$/.idea/flight-booking-system.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/flight-payment-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/flight-payment-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventory-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventory-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/notification-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/notification-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/notification-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/notification-service.test.iml" />
     </modules>

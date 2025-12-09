@@ -1,15 +1,15 @@
 spring:
   application:
-    name: flight-payment-service
+    name: inventory-service
 
-  # datasource config...
+  # datasource config for idempotency stuff...
   datasource:
-    url: jdbc:postgresql://localhost:5434/flight_payment
+    url: jdbc:postgresql://localhost:5435/flight_inventory
     username: postgres
     password: postgres
 
 server:
-  port: 8083
+  port: 8084
 
 # Eureka Client configuration
 eureka:
@@ -29,7 +29,7 @@ spring:
     activate:
       on-profile: docker
   datasource:
-    url: jdbc:postgresql://payment-db:5434/flight_payment
+    url: jdbc:postgresql://inventory-db:5435/flight_inventory
 
 eureka:
   client:

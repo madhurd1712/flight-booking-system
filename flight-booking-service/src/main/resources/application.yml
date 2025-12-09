@@ -29,7 +29,7 @@ spring:
     activate:
       on-profile: docker
   datasource:
-    url: jdbc:postgresql://booking-db:5432/flight_booking
+    url: jdbc:postgresql://booking-db:5433/flight_booking
 
 eureka:
   client:

@@ -1,4 +1,4 @@
-# ✈️ Flight Booking System – Microservices Architecture (Event-Driven)
+# 📦 Flight Booking System – Microservices Architecture (Event-Driven)
 
 A production‑grade **Event‑Driven Flight Booking System** built using **Java, Spring Boot, RabbitMQ**, and **Microservices Architecture**. This project demonstrates service decoupling, asynchronous workflows, choreography-style Saga, idempotency, resilience, and real-world booking workflow implementation.
 
@@ -54,7 +54,7 @@ Acts as the single entry point for clients. Key responsibilities:
 
 ### 2. **Flight Search Service**
 
-- Publicly APIs for direct searches.
+- Public APIs for direct searches.
 - Also consumed by Booking Service via **Feign Client**.
 - **Caching**: Read-optimized to reduce load.
 
@@ -64,7 +64,7 @@ Acts as the single entry point for clients. Key responsibilities:
 Responsible for:
 - Validating user booking request
 - Calling Flight Search Service via **Feign**
-- Creating booking in **PENDING** state
+- Creating a booking in **PENDING** state
 - Publishing `booking.created` event to **RabbitMQ**
 - Consuming **Failure / Success Events** from other services
 - Updating final booking state (`CONFIRMED` / `FAILED`)
@@ -194,7 +194,7 @@ Each service declares its own queue(s) on startup and binds routing keys as need
                          │   • inventory.failed     │
                          └──────────────┬───────────┘
                                         │
-                    inventory.success   │     inventory.failed
+                    [inventory.success] │     [inventory.failed]
                           ┌─────────────┘─────────────┐
                           │                           │
                           ▼                           ▼
@@ -241,14 +241,14 @@ POST /book
 Booking Service:
 1. Calls Flight Search Service via Feign
 2. If invalid → return error (NO events published)
-3. Creates booking with status **PENDING**
+3. Creates a booking with status **PENDING**
 4. Publishes `booking.created`
 
 ---
 
 ## **2️⃣ Booking → Inventory (via RabbitMQ)**
 Inventory Service consumes `booking.created`:
-- Performs idempotency check
+- Performs an idempotency check
 - Validates seats
 - Reserves seats
 - Publishes:

@@ -21,7 +21,7 @@ class PaymentServiceTest {
     @InjectMocks PaymentService s;
 
     @Test void testProcess() {
-        PaymentRequest request = new PaymentRequest(); request.setBookingId(1L);
+        PaymentRequest request = new PaymentRequest(); request.setBookingId("1");
         when(repo.save(any())).thenReturn(new Payment());
         s.process(request);
         verify(repo).save(any());

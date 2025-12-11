@@ -1,46 +1,9 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Databases
-  search-db:
-    image: postgres:15
-    container_name: search-db
-    environment:
-      POSTGRES_DB: flight_search
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - search-data:/var/lib/postgresql/data
-
-  booking-db:
-    image: postgres:15
-    container_name: booking-db
-    environment:
-      POSTGRES_DB: flight_booking
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    volumes:
-      - booking-data:/var/lib/postgresql/data
-
-  payment-db:
-    image: postgres:15
-    container_name: payment-db
-    environment:
-      POSTGRES_DB: flight_payment
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5434:5432"
-    volumes:
-      - payment-data:/var/lib/postgresql/data
-
-  # RabbitMQ
   rabbitmq:
     image: rabbitmq:3-management
+    hostname: rabbitmq
     container_name: rabbitmq
     ports:
       - "5672:5672"
@@ -49,66 +12,98 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
-  # Redis
   redis:
-    image: redis:7-alpine
+    image: redis:7
     container_name: redis
     ports:
       - "6379:6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - redis-data:/data
 
-  # Eureka Server
   eureka-server:
     build: ./eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      - SPRING_PROFILES_ACTIVE=docker
 
-  # API Gateway
   api-gateway:
     build: ./api-gateway
     container_name: api-gateway
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - redis
+
+  flight-search-service:
+    build: ./flight-search-service
+    container_name: flight-search-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     depends_on:
       - eureka-server
       - redis
 
-  # Notification Service
+  flight-booking-service:
+    build: ./flight-booking-service
+    container_name: flight-booking-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - eureka-server
+      - rabbitmq
+      - flight-search-service
+
+  flight-payment-service:
+    build: ./flight-payment-service
+    container_name: flight-payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - eureka-server
+      - rabbitmq
+
+  inventory-service:
+    build: ./inventory-service
+    container_name: inventory-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - eureka-server
+      - rabbitmq
+
   notification-service:
     build: ./notification-service
     container_name: notification-service
     ports:
       - "8090:8090"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=test@example.com
+      - SPRING_MAIL_PASSWORD=password
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - eureka-server
       - rabbitmq
-
-  # Inventory Service
-  inventory-service:
-    build: ./inventory-service
-    container_name: inventory-service
-    ports:
-      - "8085:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
-    depends_on:
-      - eureka-server
-      - rabbitmq
-
-volumes:
-  search-data:
-  booking-data:
-  payment-data:
-  redis-data:

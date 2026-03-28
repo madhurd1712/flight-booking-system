@@ -1,10 +1,10 @@
-# 📦 Flight Booking System – Microservices Architecture (Event-Driven)
+# Flight Booking System – Microservices Architecture (Event-Driven)
 
 A production‑grade **Event‑Driven Flight Booking System** built using **Java, Spring Boot, RabbitMQ**, and **Microservices Architecture**. This project demonstrates service decoupling, asynchronous workflows, choreography-style Saga, idempotency, resilience, and real-world booking workflow implementation.
 
 ---
 
-# 🧩 **System Overview**
+# System Overview
 This system follows an **event‑driven, asynchronous Saga-like workflow** for booking flights. The Booking Service orchestrates the process, while Inventory, Payment, and Notification services react to events.
 
 All services use:
@@ -16,7 +16,7 @@ All services use:
 
 ---
 
-## 🔗  Tech Stack
+##  Tech Stack
 
 ### **Backend Technologies**
 - **Java 17**
@@ -38,7 +38,7 @@ All services use:
 
 ---
 
-## 🧩 Microservices Overview
+##  Microservices Overview
 
 ### 1. **API Gateway**
 
@@ -121,7 +121,7 @@ idempotencyService.markProcessed(eventId);
 
 ---
 
-## 🔗 Event Routing
+##  Event Routing
 
 **Queues**:
 
@@ -136,7 +136,7 @@ Each service declares its own queue(s) on startup and binds routing keys as need
 
 ---
 
-## 🧭 Architecture ASCII Diagram (E2E)
+##  Architecture ASCII Diagram (E2E)
 
 ```
                            ┌──────────────────────────┐
@@ -231,9 +231,9 @@ Each service declares its own queue(s) on startup and binds routing keys as need
 
 ---
 
-# 🔄 **End-to-End Flow (E2E Logic)**
+# **End-to-End Flow (E2E Logic)**
 
-## **1️⃣ API Gateway → Booking Service**
+## **1️. API Gateway → Booking Service**
 User calls:
 ```
 POST /book
@@ -246,7 +246,7 @@ Booking Service:
 
 ---
 
-## **2️⃣ Booking → Inventory (via RabbitMQ)**
+## **2️. Booking → Inventory (via RabbitMQ)**
 Inventory Service consumes `booking.created`:
 - Performs an idempotency check
 - Validates seats
@@ -257,7 +257,7 @@ Inventory Service consumes `booking.created`:
 
 ---
 
-## **3️⃣ Inventory → Payment**
+## **3️. Inventory → Payment**
 Payment Service consumes `inventory.success`:
 - Idempotency check
 - Performs dummy payment
@@ -267,7 +267,7 @@ Payment Service consumes `inventory.success`:
 
 ---
 
-## **4️⃣ Payment → Notification**
+## **4️. Payment → Notification**
 Notification Service consumes all events and sends proper emails for:
 - Booking confirmation
 - Payment success
@@ -276,7 +276,7 @@ Notification Service consumes all events and sends proper emails for:
 
 ---
 
-## **5️⃣ Notification → Booking (Final State Update)**
+## **5️. Notification → Booking (Final State Update)**
 Booking Service consumes:
 - `inventory.failed` → Booking = **FAILED**
 - `payment.failed` → Booking = **FAILED**
